@@ -8,7 +8,7 @@
 #define StackSize 16
 #define ScreenSize 32 * 64
 
-struct chip8inters{
+struct chip8{
 	//Chip's memory
 	unsigned char *memory;
 	//Chip's Stack
@@ -24,6 +24,6 @@ struct chip8inters{
 	//Chip's timers
 	unsigned char delay_timer;
 	unsigned char sound_timer;
-}chip8inters;
+}chip8;
 int dAssembler(unsigned char *buffer, int pc);
 #endif

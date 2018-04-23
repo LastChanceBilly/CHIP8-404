@@ -3,7 +3,6 @@
 #include <string.h>
 #include "chip8inters.h"
 
-
 int main(int argc, char *argv[]) {
 	FILE *rom_file = fopen(argv[1], "rb");
 	if(rom_file == NULL){

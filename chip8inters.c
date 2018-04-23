@@ -121,3 +121,7 @@ int dAssembler(unsigned char *buffer, int pc){
 	}
 	return count;
 }
+
+void chip8initialize(chip8 *chip){
+	
+}
