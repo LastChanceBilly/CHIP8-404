@@ -1,3 +1,0 @@
-C:\Users\LastChanceBilly\Documents\C_projects\CHIP8266\main.c:168:22: error: expected declaration specifiers or '...' before 'chip8'
- void chip8initialize(chip8 *chip){
-                      ^~~~~

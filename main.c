@@ -165,6 +165,6 @@ int dAssembler(unsigned char *buffer, int pc){
 	return count;
 }
 
-void chip8initialize(chip8 *chip){
+void chip8initialize(Chip8 *chip){
 	chip->memory = calloc(MemSize, 1);
 }
