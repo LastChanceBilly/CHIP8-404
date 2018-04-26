@@ -183,6 +183,7 @@ void OR(Chip8 * c, unsigned char regX, unsigned char regY){
 void AND(Chip8 * c, unsigned char regX, unsigned char regY){
   c->V[regX] = c->V[regX] & c->V[regY];
 }
+//8XY2
 void XOR(Chip8 * c, unsigned char regX, unsigned char regY){
   c->V[regX] = c->V[regX] ^ c->V[regY];
 }
@@ -193,7 +194,7 @@ void ADDF(Chip8 * c, unsigned char regX, unsigned char regY){
   c->V[regX] = result & 0x00ff;
 }
 //8XY5
-void SUBF(Chip8 * c, unsigned char regX, unsigned char regY){
+void SUB(Chip8 * c, unsigned char regX, unsigned char regY){
   if(c->V[regX] > c->V[regY]){
     c->V[0x0f] = 0x01;
   }
@@ -201,4 +202,19 @@ void SUBF(Chip8 * c, unsigned char regX, unsigned char regY){
     c->V[0x0f] = 0x00;
   }
   c->V[regX] -= c->V[regY];
+}
+//8XY6
+void SHR(Chip8 * c, unsigned char reg){
+  c->V[0x0f] = c->V[reg] & 1;
+  c->V[reg] = c->V[reg] >> 1;
+}
+//8XY7
+void SUBN(Chip8 * c, unsigned char regX, unsigned char regY){
+  if(c->V[regX] < c->V[regY]){
+    c->V[0x0f] = 0x01;
+  }
+  else{
+    c->V[0x0f] = 0x00;
+  }
+  c->V[regX] = c->V[regY] - c->V[regX];
 }
