@@ -14,7 +14,8 @@ void chip_init(Chip8* c, char game_name[100]){
   c->video = calloc(ScreenSize, 1);
   c->SP = 0;
   memset(c->video, 0, ScreenSize);
-  memset(c->v, 0, StackSize);
+  memset(c->Stack, 0, StackSize);
+  memset(c->V, 0, RegisterNum);
 }
 int dAssembler(Chip8 *c, int pc){
 	int count= 2;
@@ -134,11 +135,70 @@ int dAssembler(Chip8 *c, int pc){
 	}
 	return count;
 }
-void Jmp(Chip8 * c, unsigned short address){
+//1NNN
+void JP(Chip8 * c, unsigned short address){
   c->pc = address;
 }
-void SubR(Chip8 * c, unsigned short address){
-  c->v[c->SP] = c->pc;
+//2NNN
+void CALL(Chip8 * c, unsigned short address){
+  c->Stack[c->SP] = c->pc;
   c->pc = address;
   c->SP++;
+}
+//3XKK
+void SE(Chip8 * c, unsigned char reg, unsigned char val){
+  if(c->V[reg] == val){
+    c->pc += 2;
+  }
+}
+//4XKK
+void SNE(Chip8 * c, unsigned char reg, unsigned char val){
+  if(c->V[reg] != val){
+    c->pc += 2;
+  }
+}
+//5XY0
+void SRE(Chip8 * c, unsigned char regX, unsigned char regY){
+  if(c->V[regX] == c->V[regY]){
+    c->pc += 2;
+  }
+}
+//6XKK
+void LD(Chip8 * c, unsigned char reg, unsigned char val){
+  c->V[reg] = val;
+}
+//7XKK
+void ADD(Chip8 * c, unsigned char reg, unsigned char val){
+  c->V[reg] += val;
+}
+//8XY0
+void LRD(Chip8 * c, unsigned char regX, unsigned char regY){
+  c->V[regX] = c->V[regY];
+}
+//8XY1
+void OR(Chip8 * c, unsigned char regX, unsigned char regY){
+  c->V[regX] = c->V[regX] | c->V[regY];
+}
+//8XY2
+void AND(Chip8 * c, unsigned char regX, unsigned char regY){
+  c->V[regX] = c->V[regX] & c->V[regY];
+}
+void XOR(Chip8 * c, unsigned char regX, unsigned char regY){
+  c->V[regX] = c->V[regX] ^ c->V[regY];
+}
+//8XY4
+void ADDF(Chip8 * c, unsigned char regX, unsigned char regY){
+  unsigned short result = c->V[regX] + c->V[regY];
+  c->V[0x0f] = (result & 0x0100) >> 8;
+  c->V[regX] = result & 0x00ff;
+}
+//8XY5
+void SUBF(Chip8 * c, unsigned char regX, unsigned char regY){
+  if(c->V[regX] > c->V[regY]){
+    c->V[0x0f] = 0x01;
+  }
+  else{
+    c->V[0x0f] = 0x00;
+  }
+  c->V[regX] -= c->V[regY];
 }
