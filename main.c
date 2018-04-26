@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "Chip8inters.h"
-
+#include "Chip8Opcodes.h"
 
 int main(int argc, char const *argv[]) {
 	Chip8 Game;
