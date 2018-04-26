@@ -23,13 +23,14 @@ typedef struct Chip8{
 	unsigned char delay_timer;
 	unsigned char sound_timer;
 }Chip8;
+//Declare a variable Chip8
 Chip8 chip8;
 
 void chip8initialize(Chip8 *chip8);
 int dAssembler(unsigned char *buffer, int pc);
 
 int main(int argc, char *argv[]) {
-	FILE *rom_file = fopen(argv[1], "rb");
+	/*FILE *rom_file = fopen(argv[1], "rb");
 	if(rom_file == NULL){
 		printf("Can't open file %s", argv[1]);
 	}
@@ -38,12 +39,12 @@ int main(int argc, char *argv[]) {
 	fseek(rom_file, 0L, SEEK_SET);
 	unsigned char *buffer = malloc(rom_size);
 	fread(buffer, rom_size, 1, rom_file);
+	free(buffer);*/
+	chip8initialize(&chip8, &argv[1]);
 	int pc = 0;
 	while(pc < rom_size){
 		pc += dAssembler(buffer, pc);
 	}
-	free(buffer);
-	chip8initialize(&chip8);
 	return 0;
 }
 int dAssembler(unsigned char *buffer, int pc){
@@ -165,6 +166,11 @@ int dAssembler(unsigned char *buffer, int pc){
 	return count;
 }
 
-void chip8initialize(Chip8 *chip){
+void chip8initialize(Chip8 *chip, char* rom_location){
+	//Open the rom file
+	FILE *rom = fopen(*rom_location, "rb");
+	if (rom == NULL){
+		printf("Can't open file %c", *rom_location);
+	}
 	chip->memory = calloc(MemSize, 1);
 }
