@@ -39,5 +39,5 @@ void OR(Chip8 * c, unsigned char regX, unsigned char regY);
 void AND(Chip8 * c, unsigned char regX, unsigned char regY);
 void XOR(Chip8 * c, unsigned char regX, unsigned char regY);
 void ADDF(Chip8 * c, unsigned char regX, unsigned char regY);
-void SUBF(Chip8 * c, unsigned char regX, unsigned char regY);
+void SUB(Chip8 * c, unsigned char regX, unsigned char regY);
 #endif
