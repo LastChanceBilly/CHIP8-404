@@ -11,23 +11,28 @@ void OpcodeExec(Chip8 *c){
 	unsigned short addr;
 	unsigned char regX, regY;
 	unsigned char num;
+	unsigned short auxPc =0;
 	switch(uphalf){
-		/*case 0x00:
-			//Clear screen
+		case 0x00:
 			if(code[1] == 0xe0){
+				CLS(c);
 			}
 			else if(code[1] == 0xee){
+				RET(c);
+				auxPc = 2;
 			}
 			else{
 			}
-			break;*/
+			break;
 		case 0x01:
 			addr = ((code[0] & 0x0f) << 8) | code[1];
 			JP(c, addr);
+			auxPc = 2;
 			break;
 		case 0x02:
 			addr = ((code[0] & 0x0f) << 8) | code[1];
 			CALL(c, addr);
+			auxPc = 2;
 			break;
 		case 0x03:
 			regX = (code[0] & 0x0f);
@@ -46,7 +51,7 @@ void OpcodeExec(Chip8 *c){
 			break;
 		case 0x06:
 			regX = (code[0] & 0x0f);
-			num = code[1] & 0xf0;
+			num = code[1];
 			LD(c, regX, num);
 			break;
 		case 0x07:
@@ -102,6 +107,7 @@ void OpcodeExec(Chip8 *c){
 		case 0x0b:
 			addr = ((code[0] & 0x0f) << 8) | code[1];
 			JPR(c, addr);
+			auxPc = 2;
 			break;
 		case 0x0c:
 			regX = (code[0] & 0x0f);
@@ -135,7 +141,7 @@ void OpcodeExec(Chip8 *c){
 					LDDT(c, regX);
 					break;
 				case 0x0a:
-					SKHP(c, regX);
+					auxPc = SKHP(c, regX);
 					break;
 				case 0x15:
 					DTLD(c, regX);
@@ -167,7 +173,18 @@ void OpcodeExec(Chip8 *c){
 			;
 			//printf("Error, opcode %02X%02X\n", code[0] , code[1]);
 	}
-	c->pc+=2;
+	c->pc+=2 - auxPc;
+}
+//00E0
+void CLS(Chip8 *c){
+	for(unsigned short i; i< (videoH * videoH); i++){
+		c->video[i] &= 0;
+	}
+}
+//00EE
+void RET(Chip8 *c){
+	c->pc = c->Stack[0];
+	c->SP--;
 }
 //1NNN
 void JP(Chip8 * c, unsigned short address){
@@ -204,7 +221,8 @@ void LD(Chip8 * c, unsigned char reg, unsigned char val){
 }
 //7XKK
 void ADD(Chip8 * c, unsigned char reg, unsigned char val){
-  c->V[reg] += val;
+	c->V[reg] = c->V[reg] + val;
+	printf("%04X\n", c->V[reg]);
 }
 //8XY0
 void LRD(Chip8 * c, unsigned char regX, unsigned char regY){
@@ -315,13 +333,14 @@ void LDDT(Chip8 * c, unsigned char reg){
 	c->V[reg] = c->delay_timer;
 }
 //FX0A
-void SKHP(Chip8 * c, unsigned char reg){
+unsigned short SKHP(Chip8 * c, unsigned char reg){
 	for(unsigned char i = 0; i < 16 ; i++){
 		if(c->keys[i] != 0){
 			c->V[reg] = i;
+			return 0;
 		}
 		else{
-			c->pc -= 2;
+			return 2;
 		}
 	}
 }

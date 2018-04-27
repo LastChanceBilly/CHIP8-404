@@ -3,6 +3,8 @@
 
 void OpcodeExec(Chip8 *c);
 void chip_init(Chip8* c, char game_name[100]);
+void CLS(Chip8 * c);
+void RET(Chip8 * c);
 void JP(Chip8 * c, unsigned short address);
 void CALL(Chip8 * c, unsigned short address);
 void SE(Chip8 * c, unsigned char reg,unsigned char val);
@@ -27,7 +29,7 @@ void DRW(Chip8 * c, unsigned char regX, unsigned char regY, unsigned char n);
 void SKP(Chip8 * c, unsigned char reg);
 void SKNP(Chip8 * c, unsigned char reg);
 void LDDT(Chip8 * c, unsigned char reg);
-void SKHP(Chip8 * c, unsigned char reg);
+unsigned short SKHP(Chip8 * c, unsigned char reg);
 void DTLD(Chip8 * c, unsigned char reg);
 void LDST(Chip8 * c, unsigned char reg);
 void IADD(Chip8 * c, unsigned char reg);

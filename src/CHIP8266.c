@@ -13,7 +13,6 @@ int main(int argc, char const *argv[]) {
 	while(1){
 		chip8Monitor(&Game);
 		OpcodeExec(&Game);
-		delay(10);
 	}
 	return 0;
 }
