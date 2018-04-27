@@ -307,7 +307,7 @@ void DRW(Chip8 * c, unsigned char regX, unsigned char regY, unsigned char n){
 			}
 		}
 	}
-	//DebugDraw(c);
+	DebugDraw(c);
 }
 //EX9E
 void SKP(Chip8 * c, unsigned char reg){

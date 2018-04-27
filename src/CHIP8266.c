@@ -9,7 +9,7 @@ void delay(int timer);
 void chip8Monitor(Chip8 *c);
 int main(int argc, char const *argv[]) {
 	Chip8 Game;
-	chip_init(&Game, "../c8games/MAZE");
+	chip_init(&Game, argv[1]);
 	while(1){
 		//chip8Monitor(&Game);
 		OpcodeExec(&Game);

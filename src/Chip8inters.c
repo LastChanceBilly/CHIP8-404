@@ -49,7 +49,7 @@ void DebugDraw(Chip8 * d){
 	int r= 0;
 	for(unsigned short i= 0; i < (videoH * videoW); i++){
 		if((i % videoW) == 0) printf("\n");
-		if(c->video[i] != 0) printf("#");
+		if(d->video[i] != 0) printf("#");
 		else printf(" ");
 	}
 }
