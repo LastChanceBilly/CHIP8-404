@@ -7,6 +7,8 @@
 #define videoH 32
 #define RegisterNum 16
 
+void DebugDraw(Chip8 * d);
+void chip_init(Chip8* c, char game_name[100]);
 typedef struct Chip8{
 	//Chip's memory
 	unsigned char *memory;

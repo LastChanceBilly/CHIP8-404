@@ -44,3 +44,12 @@ void chip_init(Chip8* c, char game_name[100]){
   memset(c->V, 0, sizeof(c->V));
 	memset(c->keys, 0, sizeof(c->keys));
 }
+void DebugDraw(Chip8 * d){
+	system("cls");
+	int r= 0;
+	for(unsigned short i= 0; i < (videoH * videoW); i++){
+		if((i % videoW) == 0) printf("\n");
+		if(c->video[i] != 0) printf("#");
+		else printf(" ");
+	}
+}

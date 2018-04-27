@@ -2,7 +2,6 @@
 #define Chip8Opcodes_H
 
 void OpcodeExec(Chip8 *c);
-void chip_init(Chip8* c, char game_name[100]);
 void CLS(Chip8 * c);
 void RET(Chip8 * c);
 void JP(Chip8 * c, unsigned short address);

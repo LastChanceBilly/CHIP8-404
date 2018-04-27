@@ -307,13 +307,7 @@ void DRW(Chip8 * c, unsigned char regX, unsigned char regY, unsigned char n){
 			}
 		}
 	}
-	system("cls");
-	int r= 0;
-	for(unsigned short i= 0; i < (videoH * videoW); i++){
-		if((i % videoW) == 0) printf("\n");
-		if(c->video[i] != 0) printf("#");
-		else printf(" ");
-	}
+	//DebugDraw(c);
 }
 //EX9E
 void SKP(Chip8 * c, unsigned char reg){
