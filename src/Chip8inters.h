@@ -25,5 +25,8 @@ typedef struct Chip8{
 	//Chip's timers
 	unsigned char delay_timer;
 	unsigned char sound_timer;
+	//Game keys
+	unsigned char keys[16];
+	//Instruction been executed (debug)
 }Chip8;
 #endif

@@ -242,3 +242,64 @@ void DRW(Chip8 * c, unsigned char regX, unsigned char regY, unsigned char n){
 		}
 	}
 }
+//EX9E
+void SKP(Chip8 * c, unsigned char reg){
+	if(c->keys[c->V[reg]] != 0){
+		c->pc += 2;
+	}
+}
+//EXA1
+void SKNP(Chip8 * c, unsigned char reg){
+	if(c->keys[c->V[reg]] == 0){
+		c->pc += 2;
+	}
+}
+//FX07
+void LDDT(Chip8 * c, unsigned char reg){
+	c->V[reg] = c->delay_timer;
+}
+//FX0A
+void SKHP(Chip8 * c, unsigned char reg){
+	for(unsigned char i = 0; i < 16 ; i++){
+		if(c->keys[i] != 0){
+			c->V[reg] = i;
+		}
+		else{
+			c->pc -= 2;
+		}
+	}
+}
+//FX15
+void DTLD(Chip8 * c, unsigned char reg){
+	c->delay_timer = c->V[reg];
+}
+//FX18
+void LDST(Chip8 * c, unsigned char reg){
+	c->sound_timer = c->V[reg];
+}
+//FX1E
+void IADD(Chip8 * c, unsigned char reg){
+	c->I = c->I + c->V[reg];
+}
+//FX29
+void ILD(Chip8 * c, unsigned char reg){
+	c->I = c->V[reg] * 5;
+}
+//FX33
+void BCD(Chip8 * c, unsigned char reg){
+	c->memory[c->I] = c->V[reg] / 100;
+	c->memory[c->I] = (c->V[reg] / 10) % 10;
+	c->memory[c->I] = c->V[reg] % 10;
+}
+//FX55
+void VLD(Chip8 * c, unsigned char reg){
+	for(unsigned char i = 0; i < reg; i++){
+		c->memory[c->I+i] = c->V[reg];
+	}
+}
+//FX65
+void LDV(Chip8 * c, unsigned char reg){
+	for(unsigned char i = 0; i < reg; i++){
+		c->V[reg] = c->memory[c->I+i];
+	}
+}
