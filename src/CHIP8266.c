@@ -10,20 +10,16 @@ void chip8Monitor(Chip8 *c);
 int main(int argc, char const *argv[]) {
 	Chip8 Game;
 	chip_init(&Game, "../c8games/PONG2");
-	CALL(&Game, 0x0400);
-	CALL(&Game, 0x0400);
-	CALL(&Game, 0x0400);
-	LD(&Game, 0x01, 0x01);
-	ADD(&Game, 0x01, 0x23);
 	while(1){
 		chip8Monitor(&Game);
 	}
 	return 0;
 }
 void chip8Monitor(Chip8 *c){
+	printf("[SP] %04X \t [PC] %04X \t [I] %04X \n", c->SP, c-> pc, c->I);
 	for(int i =0; i< 16; i++){
-		printf("[%01X]: %04X\t", i, c->V[i]);
-		printf("[%d]: %04X\n", i, c->Stack[i]);
+		printf("\t[%01X]: %04X\t", i, c->V[i]);
+		printf("[%01X]: %04X\n", i, c->Stack[i]);
 	}
 	delay(500);
 	system("cls");
