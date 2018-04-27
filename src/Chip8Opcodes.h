@@ -1,7 +1,7 @@
 #ifndef Chip8Opcodes_H
 #define Chip8Opcodes_H
 
-int OpcodeExec(Chip8 *c, int pc);
+void OpcodeExec(Chip8 *c);
 void chip_init(Chip8* c, char game_name[100]);
 void JP(Chip8 * c, unsigned short address);
 void CALL(Chip8 * c, unsigned short address);

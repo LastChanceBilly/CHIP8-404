@@ -9,19 +9,27 @@ void delay(int timer);
 void chip8Monitor(Chip8 *c);
 int main(int argc, char const *argv[]) {
 	Chip8 Game;
-	chip_init(&Game, "../c8games/PONG2");
+	chip_init(&Game, "../c8games/Maze.ch8");
 	while(1){
 		chip8Monitor(&Game);
+		OpcodeExec(&Game);
 	}
 	return 0;
 }
 void chip8Monitor(Chip8 *c){
-	printf("[SP] %04X \t [PC] %04X \t [I] %04X \n", c->SP, c-> pc, c->I);
+	printf("[SP] %04X \t [PC] %04X \t [I] %04X \t [Opcode] %02X%02X\n", c->SP, c-> pc, c->I, c->memory[c->pc],c->memory[c->pc + 1]);
 	for(int i =0; i< 16; i++){
 		printf("\t[%01X]: %04X\t", i, c->V[i]);
 		printf("[%01X]: %04X\n", i, c->Stack[i]);
 	}
-	delay(500);
+	/*for(unsigned short i = 0; i < videoH; i++){
+		for(unsigned short x= 0; x < videoW; i ++){
+			if(c->video[(i* videoH) + x] > 0) printf("#");
+			else printf("*");
+		}
+		printf("\n");
+	}*/
+	getchar();
 	system("cls");
 }
 void delay(int timer){

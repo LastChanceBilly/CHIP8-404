@@ -4,126 +4,174 @@
 #include "Chip8inters.h"
 #include "Chip8Opcodes.h"
 
-int OpcodeExec(Chip8 *c, int pc){
-	int count= 2;
-	unsigned char *code = &c->memory[pc];
+void OpcodeExec(Chip8 *c){
+	unsigned char *code = &c->memory[c->pc];
 	unsigned char uphalf = (code[0] >> 4);
-	printf("%04X %02X %02X\t", pc, code[0], code[1]);
+	//printf("%04X %02X %02X\t", c->pc, code[0], code[1]);
 	unsigned short addr;
 	unsigned char regX, regY;
 	unsigned char num;
 	switch(uphalf){
-		case 0x00:
+		/*case 0x00:
 			//Clear screen
 			if(code[1] == 0xe0){
-				printf("CLS\n");
 			}
 			else if(code[1] == 0xee){
-				printf("RETURN\n");
 			}
 			else{
-				printf("\n");
 			}
-			break;
+			break;*/
 		case 0x01:
-			//GOTO
 			addr = ((code[0] & 0x0f) << 8) | code[1];
-			printf("GOTO $%04X\n", addr);
+			JP(c, addr);
 			break;
 		case 0x02:
-			//CALL
 			addr = ((code[0] & 0x0f) << 8) | code[1];
-			printf("CALL $%04X\n", addr);
+			CALL(c, addr);
 			break;
 		case 0x03:
-			//COND, EQL
 			regX = (code[0] & 0x0f);
 			num = code[1];
-			printf("IF reg%01X EQL $#%02X, JMP $%04X\n", regX, num, pc+4);
+			SE(c, regX, num);
 			break;
 		case 0x04:
-			//COND DIFF
 			regX = (code[0] & 0x0f);
 			num = code[1];
-			printf("IF reg%01X NO-EQL $#%02X, JMP $%04X\n", regX, num, pc+4);
+			SNE(c, regX, num);
 			break;
 		case 0x05:
-			//COND (W/ REGISTERS)
 			regX = (code[0] & 0x0f);
 			regY = code[1] & 0xf0;
-			printf("IF reg%01X EQL reg%02X, JMP $%04X\n", regX, regY, pc+4);
+			SRE(c, regX, regY);
 			break;
 		case 0x06:
-			//ADD VALUE TO REG
 			regX = (code[0] & 0x0f);
 			num = code[1] & 0xf0;
-			printf("reg%01X EQL $#%02X\n", regX, num);
+			LD(c, regX, num);
 			break;
 		case 0x07:
-			//ADD NUM TO REG VALUE
 			regX = (code[0] & 0x0f);
-			num = code[1] & 0xf0;
-			printf("reg%01X ADD $#%02X\n", regX, num);
+			num = code[1];
+			ADD(c, regX, num);
 			break;
 		case 0x08:
 			regX = code[0] & 0x0f;
 			regY = (code[1] & 0xf0) >> 4;
 			switch(code[1] & 0x0f){
 				case(0x00):
-					//X = Y
-					printf("reg%01X EQL reg%01X\n", regX, regY);
+					LRD(c, regX, regY);
 					break;
 				case(0x01):
-					//X = X | Y
-					printf("reg%01X EQL reg%01X OR reg%01X\n",regX, regX, regY);
+					OR(c, regX, regY);
 					break;
 				case(0x02):
-					//X = X & Y
-					printf("reg%01X EQL reg%01X AND reg%01X\n", regX, regX, regY);
+					AND(c, regX, regY);
 					break;
 				case(0x03):
-					//X = X ^ Y
-					printf("reg%01X EQL reg%01X XOR reg%01X\n", regX, regX, regY);
+					XOR(c, regX, regY);
 					break;
 				case(0x04):
-					//X += Y
-					printf("reg%01X ADD reg%01X\n", regX, regY);
+					ADDF(c, regX, regY);
 					break;
 				case(0x05):
-					//X -= Y
-					printf("reg%01X RMV reg%01X\n", regX, regY);
+					SUB(c, regX, regY);
 					break;
 				case(0x06):
-					//X = Y = Y >> 1
-					//reg F is set to the least significant bit (i.e 01010101)
-					//                                           VF =      /|\
-					printf("reg%01X EQL SHR reg%01X (regF EQL %01X & 0x01)\n", regX, regY, regY);
+					SHR(c, regX);
 					break;
 				case(0x07):
-					//X = Y - X
-					printf("reg%01X SUBB reg%01X\n", regX, regY);
+					SUBN(c, regX, regY);
 					break;
 				case(0x0e):
-					//X = Y = Y << 1
-					//reg F is set to the most significant bit (i.e 01010101)
-					//                                       VF = /|\
-					printf("reg%01X EQL SHR reg%01X (regF EQL %01X & 0x01)\n", regX, regY, regY);
+					SHL(c, regX);
 					break;
 				default:
-					printf("\n");
+					;
+					//printf("Error, opcode %02X%02X\n", code[0] , code[1]);
 			}
 			break;
 		case 0x09:
 			regX = code[0] & 0x0f;
 			regY = (code[1] & 0xf0) >> 4;
-			printf("IF reg%01X EQL reg%01X, JUMP $%04X\n", regX, regY, pc+4);
+			SNER(c, regX, regY);
+			break;
+		case 0x0a:
+			addr = ((code[0] & 0x0f) << 8) | code[1];
+			LD_I(c, addr);
+			break;
+		case 0x0b:
+			addr = ((code[0] & 0x0f) << 8) | code[1];
+			JPR(c, addr);
+			break;
+		case 0x0c:
+			regX = (code[0] & 0x0f);
+			num = code[1];
+			RND(c, regX, num);
+			break;
+		case 0x0d:
+			regX = code[0] & 0x0f;
+			regY = (code[1] & 0xf0) >> 4;
+			num = code[1] & 0x0f;
+			DRW(c, regX, regY,num);
+			break;
+		case 0x0e:
+			regX = code[0] & 0x0f;
+			switch(code[1]){
+				case 0x9e:
+					SKP(c, regX);
+					break;
+				case 0xa1:
+					SKNP(c, regX);
+					break;
+				default:
+					;
+					//printf("Error, opcode %02X%02X\n", code[0] , code[1]);
+			}
+			break;
+		case 0x0f:
+			regX = code[0] & 0x0f;
+			switch(code[1]){
+				case 0x07:
+					LDDT(c, regX);
+					break;
+				case 0x0a:
+					SKHP(c, regX);
+					break;
+				case 0x15:
+					DTLD(c, regX);
+					break;
+				case 0x18:
+					LDST(c, regX);
+					break;
+				case 0x1e:
+					IADD(c, regX);
+					break;
+				case 0x29:
+					ILD(c, regX);
+					break;
+				case 0x33:
+					BCD(c, regX);
+					break;
+				case 0x55:
+					VLD(c, regX);
+					break;
+				case 0x65:
+					LDV(c, regX);
+					break;
+				default:
+					;
+					//printf("Error, opcode %02X%02X\n", code[0] , code[1]);
+			}
+			break;
 		default:
-			printf("\n");
+			;
+			//printf("Error, opcode %02X%02X\n", code[0] , code[1]);
 	}
-	return count;
+	c->pc+=2;
 }
 //1NNN
 void JP(Chip8 * c, unsigned short address){
+	//printf("%04X\n", address);
   c->pc = address;
 }
 //2NNN
@@ -226,7 +274,9 @@ void JPR(Chip8 * c, unsigned short address){
 }
 //CXKK
 void RND(Chip8 * c, unsigned char reg, unsigned char val){
-	c->V[reg] = (rand() % 256) & val;
+	unsigned char random = rand() % 256;
+	c->V[reg] = random & val;
+//	printf("%02X\n", random);
 }
 //DXYN
 void DRW(Chip8 * c, unsigned char regX, unsigned char regY, unsigned char n){
