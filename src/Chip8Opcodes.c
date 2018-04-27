@@ -222,7 +222,6 @@ void LD(Chip8 * c, unsigned char reg, unsigned char val){
 //7XKK
 void ADD(Chip8 * c, unsigned char reg, unsigned char val){
 	c->V[reg] = c->V[reg] + val;
-	printf("%04X\n", c->V[reg]);
 }
 //8XY0
 void LRD(Chip8 * c, unsigned char regX, unsigned char regY){
@@ -301,20 +300,20 @@ void DRW(Chip8 * c, unsigned char regX, unsigned char regY, unsigned char n){
 	for(int rows = 0; rows < n; rows++){
 		unsigned char sprite = c->memory[c->I + rows];
 		for(int pixel = 0; pixel < 8; pixel++){
-			if((sprite & (0x80 >> pixel)) !=0){
-				if(c->video[pixel + c->V[regX] + (c->V[regY] * 64) ] == 1)
+			if(sprite & (0x80 >> pixel)){
+				if(c->video[pixel + c->V[regX] + (c->V[regY] + rows) * 64 ])
 					 c->V[0x0f] = 1;
-				 c->video[pixel + c->V[regX] + (c->V[regY] * 64)] ^= 1;
+				 c->video[pixel + c->V[regX] + (c->V[regY] + rows) * 64 ] ^= 1;
 			}
 		}
 	}
-	/*system("cls");
+	system("cls");
 	int r= 0;
 	for(unsigned short i= 0; i < (videoH * videoW); i++){
 		if((i % videoW) == 0) printf("\n");
-		if(c->video[i]) printf("#");
+		if(c->video[i] != 0) printf("#");
 		else printf(" ");
-	}*/
+	}
 }
 //EX9E
 void SKP(Chip8 * c, unsigned char reg){
