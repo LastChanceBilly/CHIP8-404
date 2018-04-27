@@ -19,4 +19,9 @@ void SUB(Chip8 * c, unsigned char regX, unsigned char regY);
 void SHR(Chip8 * c, unsigned char reg);
 void SUBN(Chip8 * c, unsigned char regX, unsigned char regY);
 void SHL(Chip8 * c, unsigned char reg);
+void SNER(Chip8 * c, unsigned char regX, unsigned char regY);
+void LD_I(Chip8 * c, unsigned short val);
+void JPR(Chip8 * c, unsigned short address);
+void RND(Chip8 * c, unsigned char reg, unsigned char val);
+void DRW(Chip8 * c, unsigned char regX, unsigned char regY, unsigned char n);
 #endif

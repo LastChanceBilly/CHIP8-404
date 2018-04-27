@@ -1,0 +1,9 @@
+for (yline=0;yline<(opcode&0x000F);yline++){
+  data = memory[I+yline]; //this retreives the byte for a give line of pixels
+  for(xpix=0;xpix<8;xpix++){
+    if ((data&(0x80>>xpix))!=0){
+      if (screen[V[X] +(V[Y]*64)]==1) V[F]=1 //there has been a collision
+        screen[V[X] +(V[Y]*64)]^=1;	//note: coordinate registers from opcode
+        }
+    }
+}

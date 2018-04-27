@@ -210,3 +210,35 @@ void SHL(Chip8 * c, unsigned char reg){
   c->V[0x0f] = c->V[reg] >>7;
   c->V[reg] = c->V[reg] << 1;
 }
+//9XY0
+void SNER(Chip8 * c, unsigned char regX, unsigned char regY){
+	if(c->V[regX] != c->V[regY]){
+    c->pc += 2;
+  }
+}
+//ANNN
+void LD_I(Chip8 * c, unsigned short val){
+	c->I = val;
+}
+//BNNN
+void JPR(Chip8 * c, unsigned short address){
+  c->pc = c->V[0] + address;
+}
+//CXKK
+void RND(Chip8 * c, unsigned char reg, unsigned char val){
+	c->V[reg] = (rand() % 256) & val;
+}
+//DXYN
+void DRW(Chip8 * c, unsigned char regX, unsigned char regY, unsigned char n){
+	for(int rows = 0; rows < n; rows++){
+		unsigned char sprite = c->memory[c->I + rows];
+		for(int pixel = 0; pixel < 8; pixel++){
+			if((sprite & (0x80 >> pixel)) !=0){
+				if(c->video[regX + (regY * 64)] == 1){
+					 c->V[0x0f] = 1;
+					 c->video[regX + (regY * 64)] ^= 1;
+				 }
+			}
+		}
+	}
+}

@@ -3,7 +3,8 @@
 
 #define MemSize 4096
 #define StackSize 0x0f
-#define ScreenSize 32 * 64
+#define videoW 64
+#define videoH 32
 #define RegisterNum 16
 
 typedef struct Chip8{
@@ -12,13 +13,13 @@ typedef struct Chip8{
 	//Chip's Stack
 	unsigned short Stack[StackSize];
 	//Chip's Stack pointer
-	unsigned short SP;
+	unsigned char SP;
 	//Chip's program counter
 	unsigned char pc;
 	//Registers
 	unsigned char V[RegisterNum];
 	//Chip's Index register
-	unsigned char I;
+	unsigned short I;
 	//Chip's video memory
 	unsigned char *video;
 	//Chip's timers

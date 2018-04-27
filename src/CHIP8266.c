@@ -6,6 +6,6 @@
 
 int main(int argc, char const *argv[]) {
 	Chip8 Game;
-	chip_init(&Game, "./c8games/PONG2");
+	chip_init(&Game, "../c8games/PONG2");
 	return 0;
 }
