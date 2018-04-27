@@ -15,7 +15,8 @@ void chip_init(Chip8* c, char game_name[100]){
 	fread(c->memory +0x200, 1, MemSize-0x200, game_file);
   c->video = calloc(videoW * videoH, 1);
   c->SP = 0;
-  memset(c->video, 0, videoW * videoH);
-  memset(c->Stack, 0, StackSize);
-  memset(c->V, 0, RegisterNum);
+	c->pc = 0;
+  memset(c->video, 0, sizeof(c->video));
+  memset(c->Stack, 0, sizeof(c->Stack));
+  memset(c->V, 0, sizeof(c->V));
 }

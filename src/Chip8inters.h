@@ -2,7 +2,7 @@
 #define Chip8C8inters_H
 
 #define MemSize 4096
-#define StackSize 0x0f
+#define StackSize 16
 #define videoW 64
 #define videoH 32
 #define RegisterNum 16
@@ -15,7 +15,7 @@ typedef struct Chip8{
 	//Chip's Stack pointer
 	unsigned char SP;
 	//Chip's program counter
-	unsigned char pc;
+	unsigned short pc;
 	//Registers
 	unsigned char V[RegisterNum];
 	//Chip's Index register
