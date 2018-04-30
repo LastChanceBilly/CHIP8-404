@@ -6,6 +6,7 @@
 #define videoW 64
 #define videoH 32
 #define RegisterNum 16
+#define timerDelay 10
 
 typedef struct Chip8{
 	//Chip's memory
