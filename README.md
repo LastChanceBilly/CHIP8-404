@@ -1,9 +1,13 @@
-# CHIP8266
-This is a Chip-8 emulator for the esp8266 and arduino compatible microcontrollers.
+# CHIP8-404
+This is a Chip-8 emulator (Virtual enviroment).
 ## Why?
 This is a frist step into making a variarity of emulators for (hopefuly) many other systems like the VIC 20, Atari 2600 and NES.
 
 And also, I always wanted to write my own emulators, and chip 8 it's a relatively easy system to "emulate".
+
+#### Update: 
+This was suppose to be an emulator for the ESP8266, but since I've been a little busy with other porjects I decided to leave this(For now...). But I'll be adding SDL support later on, so at least there's that.
+
 
 ### Useful sources:
 
