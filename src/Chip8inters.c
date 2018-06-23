@@ -36,20 +36,18 @@ void chip_init(Chip8* c, char game_name[100]){
 		c->memory[i] = fonts[i];
 	}
 	fread(c->memory +0x200, 1, MemSize-0x200, game_file);
-  c->video = calloc(videoW * videoH, 1);
-  c->SP = c->delay_timer = c->sound_timer = c->I =0;
+	c->video = calloc(videoW * videoH, 1);
+	c->SP = c->delay_timer = c->sound_timer = c->I =0;
 	c->pc = 0x200;
-  memset(c->video, 0, videoH * videoW);
-  memset(c->Stack, 0, sizeof(c->Stack));
-  memset(c->V, 0, sizeof(c->V));
+	memset(c->video, 0, videoH * videoW);
+	memset(c->Stack, 0, sizeof(c->Stack));
+	memset(c->V, 0, sizeof(c->V));
 	memset(c->keys, 0, sizeof(c->keys));
 }
-void DebugDraw(Chip8 * d){
-	system("cls");
-	int r= 0;
-	for(unsigned short i= 0; i < (videoH * videoW); i++){
-		if((i % videoW) == 0) printf("\n");
-		if(d->video[i] != 0) printf("#");
-		else printf(" ");
+void PixelDraw(Chip8 * d, u_int32_t *Pixels){
+	for(int y = 0; y<WINDOW_H; y++){
+		for(int x = 0; x<WINDOW_W; x++){
+			Pixels[WINDOW_W * y + x] = d->video[x/(WINDOW_W/videoW) + videoW * (y/(WINDOW_H/videoH))] > 0 ? 0xFFFFFFFF: 0x00000000;
+		}
 	}
 }

@@ -8,6 +8,10 @@
 #define RegisterNum 16
 #define timerDelay 10
 
+//SDL window size
+#define WINDOW_W 640
+#define WINDOW_H 320
+
 typedef struct Chip8{
 	//Chip's memory
 	unsigned char *memory;
@@ -30,6 +34,6 @@ typedef struct Chip8{
 	unsigned char keys[16];
 	//Instruction been executed (debug)
 }Chip8;
-void DebugDraw(Chip8 * d);
+void PixelDraw(Chip8 * d, u_int32_t *Pixels);
 void chip_init(Chip8* c, char game_name[100]);
 #endif
